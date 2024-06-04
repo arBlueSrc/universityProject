@@ -2,6 +2,7 @@ package ir.bluesource.q
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -25,8 +26,6 @@ class InfoActivity : AppCompatActivity() {
             insets
         }
 
-        val model = ViewModelProvider(this).get(SharedViewModel::class.java)
-
 
         binding.button33.setOnClickListener {
 
@@ -35,11 +34,11 @@ class InfoActivity : AppCompatActivity() {
                 Toast.makeText(this, "لطفا اسم و فامیل خود را وارد کنید", Toast.LENGTH_LONG).show()
             }else{
 
-                model.name = binding.editTextText.text.toString().trim()
-                model.phone = binding.editTextText2.text.toString().trim()
-                model.job = binding.editTextText3.text.toString().trim()
-
-                startActivity(Intent(this@InfoActivity, ExpActivity::class.java))
+                val intent = Intent(this@InfoActivity, ExpActivity::class.java)
+                intent.putExtra("name" , binding.editTextText.text.toString().trim())
+                intent.putExtra("phone" , binding.editTextText2.text.toString().trim())
+                intent.putExtra("job" , binding.editTextText3.text.toString().trim())
+                startActivity(intent)
                 finish()
             }
 
