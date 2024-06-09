@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -29,7 +30,7 @@ class ExpActivity : AppCompatActivity() {
 
     private lateinit var viewModel: SharedViewModel
     private lateinit var binding : ActivityExpBinding
-    private val BASE_URL = "http://192.168.251.221:8000/"
+    private val BASE_URL = "http://q.bluesource.ir/"
 
 
 
@@ -89,7 +90,11 @@ class ExpActivity : AppCompatActivity() {
         binding.btnSend.setOnClickListener {
             binding.btnSend.isEnabled = false
             binding.btnSend.setText("صبر کنید ...")
-            sendToDataBase()
+            try{
+                sendToDataBase()
+            }catch (e : Exception){
+                Toast.makeText(this, "مشکل در برقراری ارتباط با سرور: با ۰۹۱۲۷۳۰۵۶۲۷ تماس بگیرید", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -276,9 +281,18 @@ class ExpActivity : AppCompatActivity() {
         dialogLayout.apply {
             txtQuestion.setText(viewModel.experisions.get(i-1).question)
             btnRegisterRate.setOnClickListener {
-                viewModel.experisions.get(i-1).rank = this.seekBar.value.toInt()
-                handleButtons(i,this.seekBar.value.toInt() )
-                alert.dismiss()
+
+                //we should check if rate exist
+                val rate = this.seekBar.value.toInt()
+                val persmissionCount = viewModel.permissionCount.filter { it.first == rate }[0].second
+                val userCurrentRates = viewModel.experisions.filter { it.rank == rate }.count()
+                if (userCurrentRates == persmissionCount){
+                    Toast.makeText(this@ExpActivity, "ظرفیت این امتیاز تکمیل شده.", Toast.LENGTH_SHORT).show()
+                }else{
+                    viewModel.experisions.get(i-1).rank = this.seekBar.value.toInt()
+                    handleButtons(i,this.seekBar.value.toInt() )
+                    alert.dismiss()
+                }
             }
         }
 

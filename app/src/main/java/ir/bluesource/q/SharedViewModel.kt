@@ -41,6 +41,18 @@ class SharedViewModel : ViewModel() {
         Exp(32, "اجرای سریع تر و راحت تر سنگ نسبت به سایر متریال ها در ساختمان برای مشتری حائز اهمیت است. ")
     )
 
+    val permissionCount = mutableListOf(
+        Pair(-4,1),
+        Pair(-3,3),
+        Pair(-2,4),
+        Pair(-1,5),
+        Pair(0,6),
+        Pair(1,5),
+        Pair(2,4),
+        Pair(3,3),
+        Pair(4,1),
+    )
+
     var name = ""
     var phone = ""
     var job = ""
